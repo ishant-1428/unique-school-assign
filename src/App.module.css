@@ -1,0 +1,13 @@
+.container{
+  display: flex;
+  padding: 100px;
+  /* margin-left: 50px; */
+  justify-content: space-evenly;
+}
+
+
+@media screen and (max-width:840px){
+  .container{
+    display: block;
+  }
+}
