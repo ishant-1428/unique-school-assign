@@ -124,8 +124,8 @@ export const TabularData = () => {
       )}
 
       {/* Drag and drop context */}
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
+      <DragDropContext onDragEnd={onDragEnd} >
+        <Droppable droppableId="droppable" className={styles.droppable}>
           {(provided) => (
             // Table with drag-and-drop capabilities
             <table
@@ -165,9 +165,9 @@ export const TabularData = () => {
                             {maskData(row.email, "email")}
                           </span>
                         </td>
-                        {/* Edit button */}
                         <td>
                           <button
+                          className={styles.buttons}
                             onClick={() =>
                               handleEdit(
                                 index,
@@ -179,9 +179,8 @@ export const TabularData = () => {
                             Edit
                           </button>
                         </td>
-                        {/* Delete button */}
                         <td>
-                          <button onClick={() => handleDelete(index)}>
+                          <button onClick={() => handleDelete(index)} className={styles.buttons}>
                             Delete
                           </button>
                         </td>

@@ -1,13 +1,19 @@
 .container{
-  display: flex;
+  /* display: block; */
   padding: 100px;
-  /* margin-left: 50px; */
+  margin-left: 50px;
   justify-content: space-evenly;
 }
 
 @media screen and (min-width: 992px) {
   .container {
     display: flex;
-    gap: 12rem;
+    /* gap: 12rem; */
   }
 }
+
+ @media screen and (max-width: 840px) {
+  .container{
+    padding: 45px;   
+  }
+} 
