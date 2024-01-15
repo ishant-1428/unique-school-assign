@@ -1,39 +1,81 @@
-@import '../vars.css';
+@import "../vars.css";
 
-.title{
-    font-size: 54px;
-    margin-top: 130px;
-    font-weight: 500;
-}
-.tableItems{
-    padding: 5px;
+.title {
+  font-size: 54px;
+  margin-top: 130px;
+  font-weight: 500;
 }
 
-.oddRow{
-    background-color: var(--color-secondary);
+.table {
+  width: 100%;
 }
-.evenRow{
-    background-color: var(--color-primary);
-}
-
-.coloredLetter{
-    color: var(--color-primary);
-    font-weight: bold;
+.tableItems {
+  padding: 5px;
+  width: 20px;
+  text-align: left;
 }
 
-.tableItem{
-    /* display: flex; */
-    justify-content: space-around;
-    font-weight: bold;
-    width: 400px;
-    /* height: 20px; */
+.oddRow {
+  background-color: var(--color-secondary);
+}
+.evenRow {
+  background-color: var(--color-primary);
 }
 
-@media screen and (max-width:840px){
-    .title{
-        margin-top: 50px;
-    }
-    .email{
-        display: none;
-    }
+.coloredLetter {
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.name {
+  display: inline-block;
+  width: 100px;
+}
+
+.tableItem {
+  display: flex;
+  /* justify-content: space-around; */
+  font-weight: bold;
+  padding: 4px 12px;
+  /* border-radius: 4px; */
+  align-items: center;
+  gap: 1rem;
+}
+
+.downloadCSV {
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 14px;
+  padding: 10px 40px;
+  border-radius: 25px;
+  border: none;
+  margin: 10px 10px;
+  cursor: pointer;
+  width: 180px;
+  font-weight: bold;
+}
+
+.email {
+  display: inline-block;
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* overflow: hidden; */
+}
+
+@media screen and (max-width: 840px) {
+  .title {
+    margin-top: 50px;
+  }
+  .email {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  /* .tableItem {
+    width: 430px;
+  } */
 }

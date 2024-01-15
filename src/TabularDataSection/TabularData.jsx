@@ -5,8 +5,10 @@ import { useUserContext } from "../UserContext";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 export const TabularData = () => {
+  // Access subscribers and setSubscribers from the context
   const { subscribers, setSubscribers } = useUserContext();
 
+  // Mask email and hexCode for privacy
   const maskData = (value, isEmail = "hexCode") => {
     if (value === null) return;
     if (isEmail === "email") {
@@ -20,9 +22,9 @@ export const TabularData = () => {
     }
   };
 
+  // Convert array to CSV format
   const convertToCSV = (objArray) => {
-    const array =
-      typeof objArray !== "object" ? JSON.parse(objArray) : objArray;
+    const array = typeof objArray !== "object" ? JSON.parse(objArray) : objArray;
     let str = "";
 
     for (let i = 0; i < array.length; i++) {
@@ -39,6 +41,7 @@ export const TabularData = () => {
     return str;
   };
 
+  // Download CSV file
   const downloadCSV = (jsonData) => {
     const csvStr = convertToCSV(jsonData);
     const blob = new Blob([csvStr], { type: "text/csv;charset=utf-8;" });
@@ -51,6 +54,7 @@ export const TabularData = () => {
     document.body.removeChild(link);
   };
 
+  // Delete subscriber by index
   const handleDelete = (index) => {
     // Validate index
     if (index >= 0 && index < subscribers.length) {
@@ -67,6 +71,7 @@ export const TabularData = () => {
     }
   };
 
+  // Edit subscriber by index
   const handleEdit = (index, editedName, editedEmail) => {
     if (editedName !== null || editedEmail !== null) {
       // Validate index
@@ -86,6 +91,7 @@ export const TabularData = () => {
     }
   };
 
+  // Handle drag-and-drop reordering
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;
@@ -95,8 +101,7 @@ export const TabularData = () => {
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    console.log(items, "items");
-    // Update your subscribers state here
+    // Update subscribers state with the new order
     setSubscribers(items);
   };
 
@@ -106,25 +111,39 @@ export const TabularData = () => {
         <span className={styles.coloredLetter}>{subscribers.length}</span>{" "}
         Joinee's
       </h1>
-      <div>
-        <button onClick={() => downloadCSV(subscribers)}>Download CSV</button>
-      </div>
+      {subscribers.length > 0 && (
+        <div>
+          {/* Download CSV button */}
+          <button
+            className={styles.downloadCSV}
+            onClick={() => downloadCSV(subscribers)}
+          >
+            Download CSV
+          </button>
+        </div>
+      )}
+
+      {/* Drag and drop context */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided) => (
+            // Table with drag-and-drop capabilities
             <table
               {...provided.droppableProps}
               ref={provided.innerRef}
               className={styles.table}
             >
               <tbody className={styles.tableItems}>
+                {/* Mapping through subscribers to render rows */}
                 {subscribers.map((row, index) => (
+                  // Draggable row
                   <Draggable
                     key={row.hexCode}
                     draggableId={row.hexCode}
                     index={index}
                   >
                     {(provided) => (
+                      // Table row
                       <tr
                         ref={provided.innerRef}
                         {...provided.draggableProps}
@@ -133,17 +152,20 @@ export const TabularData = () => {
                           index % 2 === 0 ? styles.evenRow : styles.oddRow
                         }
                       >
+                        {/* Table data cells */}
                         <td className={styles.tableItem}>
-                          #{index + 1} {row.name} {maskData(row.hexCode)}
+                          <span className={styles.tableItems}>
+                            #{index + 1}
+                          </span>
+                          <span className={styles.name}>{row.name}</span>{" "}
+                          <span className={styles.name}>
+                            {maskData(row.hexCode)}
+                          </span>
                           <span className={styles.email}>
                             {maskData(row.email, "email")}
                           </span>
                         </td>
-                        <td>
-                          <button onClick={() => handleDelete(index)}>
-                            Delete
-                          </button>
-                        </td>
+                        {/* Edit button */}
                         <td>
                           <button
                             onClick={() =>
@@ -155,6 +177,12 @@ export const TabularData = () => {
                             }
                           >
                             Edit
+                          </button>
+                        </td>
+                        {/* Delete button */}
+                        <td>
+                          <button onClick={() => handleDelete(index)}>
+                            Delete
                           </button>
                         </td>
                       </tr>
@@ -169,61 +197,4 @@ export const TabularData = () => {
       </DragDropContext>
     </div>
   );
-
-  // return (
-  //   <div className={styles.container}>
-  //     <h1 className={styles.title}>
-  //       <span className={styles.coloredLetter}>{subscribers.length}</span>{" "}
-  //       Joinee's
-  //     </h1>
-  //     <div>
-  //       <button
-  //         onClick={() => {
-  //           downloadCSV(subscribers);
-  //         }}
-  //       >
-  //         Download CSV
-  //       </button>
-  //     </div>
-  //     <div className={styles.table}>
-  //       <table>
-  //         <tbody className={styles.tableItems}>
-  //           {subscribers.map((row, index) => (
-  //             <tr
-  //               key={index}
-  //               className={index % 2 === 0 ? styles.evenRow : styles.oddRow}
-  //             >
-  //               <td className={styles.tableItem}>
-  //                 #{index + 1} {row["name"]} {maskData(row.hexCode)}{" "}
-  //                 <span className={styles.email}>
-  //                   {maskData(row.email, "email")}
-  //                 </span>
-  //               </td>
-  //               <td>
-  //                 <button
-  //                   onClick={() => {
-  //                     handleDelete(index);
-  //                   }}
-  //                 ></button>
-  //               </td>
-  //               <td>
-  //                 <button
-  //                   onClick={() => {
-  //                     handleEdit(
-  //                       index,
-  //                       prompt("Enter new name"),
-  //                       prompt("Enter new email")
-  //                     );
-  //                   }}
-  //                 >
-  //                   Edit
-  //                 </button>
-  //               </td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   </div>
-  // );
 };
